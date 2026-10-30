@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g:ui_form>
+<g2:requires name="scripts/lib/jquery_includes.js"/>
+<input type="hidden" id="cancelled" name="cancelled" value="false"/>
+<input type="hidden" name="bundleId" id="bundleID" value="${sysparm_sys_id}"/>
+	<j2:if test="$[!empty(sysparm_domain)]">
+		<input type="hidden" id="sysparm_domain" name="sysparm_domain" value="${sysparm_domain}"/>
+	</j2:if>
+	<j2:if test="$[!empty(sysparm_domain_scope)]">
+		<input type="hidden" id="sysparm_domain_scope" name="sysparm_domain_scope" value="${sysparm_domain_scope}" />
+	</j2:if>
+	<div id="main-container">
+	<div class="row header">
+		<div class="col-md-12 header-col">
+			<label class="header-text">${gs.getMessage('Warning')}</label>
+		</div>
+		<div class="col-md-12 header-warn">
+			<label class="header-text">${gs.getMessage('This action will release the assets from the asset bundle.  Do you want to continue?')}</label>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div style="float:right">
+			<button id="cancel-btn" style="margin-right:10px" class="btn btn-default" onClick="cancel();">${gs.getMessage('Cancel')}</button>
+			<button id="release-assets-btn" class="btn btn-primary" onClick="return releaseAssets();">${gs.getMessage('Release assets')}</button>
+			
+		</div>
+	</div>
+</div>
+<style>
+	#main-container {
+		margin: 0px 12px;
+	}
+	.header-col {
+		padding: 8px 6px 6px 6px;
+		text-align: center;
+		font-size: 17px;
+		font-weight: bolder;
+		color: tomato;
+	}
+	.header-warn {
+		padding: 8px 6px 6px 6px;
+		text-align: left;
+	}
+	
+</style>
+</g:ui_form>
+</j:jelly>

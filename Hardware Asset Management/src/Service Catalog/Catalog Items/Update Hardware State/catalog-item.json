@@ -1,0 +1,59 @@
+{
+    "record": {
+        "table": "sc_cat_item",
+        "sys_id": "73e47230345013107f44de1b321144a4",
+        "name": "Update Hardware State",
+        "short_description": "Update the state of a hardware asset",
+        "description": "Select an alm_hardware record and a valid state. The asset is updated when the request is submitted.",
+        "active": true
+    },
+    "variables": [
+        {
+            "name": "asset",
+            "question": "Hardware asset",
+            "type": "reference",
+            "reference": "alm_hardware",
+            "mandatory": true,
+            "order": 100
+        },
+        {
+            "name": "state",
+            "question": "New state",
+            "type": "select_box",
+            "mandatory": true,
+            "order": 200,
+            "choices_source": "active alm_hardware and alm_asset install_status choices"
+        }
+    ],
+    "catalog_client_script": {
+        "sys_id": "7dc876f0345013107f44de1b321144f0",
+        "name": "Load hardware state choices",
+        "type": "onChange",
+        "variable": "asset",
+        "ui_type": "All",
+        "source": "../Catalog Client Scripts/Load hardware state choices.script.js"
+    },
+    "business_rule": {
+        "sys_id": "71567670345013107f44de1b321144da",
+        "name": "Apply catalog hardware state",
+        "table": "sc_req_item",
+        "when": "after",
+        "insert": true,
+        "condition": "Checks cat_item sys_id in script",
+        "source": "../../Server Development/Business Rules/Apply catalog hardware state.script.js"
+    },
+    "script_include": {
+        "sys_id": "c769bef0345013107f44de1b321144ce",
+        "name": "HardwareStateCatalogAjax",
+        "client_callable": true,
+        "accessible_from": "All application scopes",
+        "required_role": "asset",
+        "active": true,
+        "source": "../../Server Development/Script Includes/HardwareStateCatalogAjax.script.js"
+    },
+    "deployment": {
+        "catalogs_and_user_criteria": "Set according to the asset-management access policy before publishing.",
+        "instance_record_created": true,
+        "update_set": "Verify that all records were captured in the intended update set before promotion."
+    }
+}

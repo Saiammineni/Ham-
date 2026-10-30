@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g2:ui_form onsubmit="return BundleSelectAssetUtil.validateSubmit();">
+<g2:requires name="scripts/lib/jquery_includes.js"/>
+<j2:set var="jvar_sys_id" value="$[sysparm_sys_id]"/> 
+<j2:set var="jvar_stockroom" value="$[sysparm_stockroom]"/>
+
+<g2:evaluate var="jvar_model_data" object="true">
+	var models = new sn_hamp.HAMAssetBundleUtils().getUnfilledBundledAssetInfo('$[jvar_sys_id]');
+	var result = { arr: models, str: JSON.stringify(models) };
+    result
+</g2:evaluate>
+<input type="hidden" id="cancelled" name="cancelled" value="false"/>
+<input type="hidden" id="selectAssetHash" name="selectAssetHash"/>
+<input type="hidden" id="bundleId" name="bundleId" value='$[jvar_sys_id]'/>
+<j2:if test="$[!empty(sysparm_domain)]">
+	<input type="hidden" id="sysparm_domain" name="sysparm_domain" value="${sysparm_domain}"/>
+</j2:if>
+<j2:if test="$[!empty(sysparm_domain_scope)]">
+	<input type="hidden" id="sysparm_domain_scope" name="sysparm_domain_scope" value="${sysparm_domain_scope}" />
+</j2:if>
+<div id="meta-data-container" data-payload="$[jvar_model_data.str]"></div>
+<div id="bundle-container" data-model-id="$[jvar_sys_id]"></div>
+<div id="error-message-container"  class="alert alert-danger" style="display:none;" role="alert">
+  ${gs.getMessage('Select atleast one asset for a model')}
+</div>
+<div id="translation-div" data-select-model-text="${gs.getMessage('Select more models')}"></div>
+<div id="main-container">
+	<div class="row header">
+		<div class="col-xs-1 header-col">
+			<label id="action_label" class="header-text" title="${gs.getMessage('Action')}">${gs.getMessage('Action')}</label>
+		</div>
+		<div class="col-xs-5 header-col">
+			<label id="model_label" class="header-text" title="${gs.getMessage('Model')}">${gs.getMessage('Model')}</label>
+		</div>
+		<div class="col-xs-2 header-col">
+			<label id="quantity_label" class="header-text" title="${gs.getMessage('Quantity')}">${gs.getMessage('Quantity')}</label>
+		</div>
+		<div class="col-xs-4 header-col">
+			<label id="select_asset_label" class="header-text" title="${gs.getMessage('Select Asset')}">${gs.getMessage('Select Asset')}</label>
+		</div>
+	</div>
+	<br/>
+	
+	<div id="bundle-list-container">
+		<j2:forEach items="$[jvar_model_data.arr]" var="jvar_model">
+			<g2:evaluate jelly="true">
+				var modelName = jelly.jvar_model.name;
+				var assetClass = jelly.jvar_model.assetClass;
+				var modelId = jelly.jvar_model.modelId;
+				var id = jelly.jvar_model.id;
+				var count = jelly.jvar_model.count + '';
+				var isConsumable = jelly.jvar_model.isConsumable;
+				var stockroomQuery = '';
+				if ('$[jvar_stockroom]') {
+					stockroomQuery = '^stockroom=$[jvar_stockroom]';
+				}
+			</g2:evaluate>
+			<div id="id_$[id]" class="asset-row">
+				<div class="row">
+					<div class="col-xs-1">
+						<button aria-label="${gs.getMessage('Close row')}" tabindex="0" class="close-btn btn btn-icon icon-cross" onClick="BundleSelectAssetUtil.removeRow('$[id]');"></button>
+					</div>
+					<div class="col-xs-5 asset-label">
+						<label aria-labelledby="model_label">$[modelName]</label>
+					</div>
+					<div class="col-xs-2 asset-label">
+						<label aria-labelledby="quantity_label">$[count]</label>
+					</div>
+					<div class="col-xs-4">
+						<label aria-labelledby="select_asset_label" class="full-width"/>
+						<g2:ui_reference name="ref_$[id]" query="asset_function=^ORasset_function!=loaner^install_status=6^substatus=available^parentISEMPTY^model=$[modelId]$[stockroomQuery]" id="ref_$[id]" table="$[assetClass]"/>
+					</div>
+				</div>
+			</div>
+		</j2:forEach>
+	</div>
+	<br/>
+	
+	<div class="row">
+		<div aria-label="${gs.getMessage('Select model')}" id="asset-select-container" class="col-xs-6">
+			<select id="asset-select" class="form-control float-left" onChange="BundleSelectAssetUtil.selectAsset(event.target.value);"></select>
+		</div>
+		<div class="col-xs-6">
+			<g:dialog_button id="add-assets-btn" style_class="btn btn-primary float-right"  onClick="BundleSelectAssetUtil.associateAssets();">${gs.getMessage('Add assets')}</g:dialog_button>
+		</div>
+	</div>
+</div>
+<style>
+	#main-container {
+		margin: 0px 12px;
+	}
+	
+	.asset-label {
+		margin-top: 7px;
+	}
+	
+	.asset-row {
+		margin-bottom: 5px;
+	}
+	
+	.header {
+		background: RGB(var(--now-color_background--secondary,var(--now-color--neutral-1,246,247,247)));
+		display: flex;
+	}
+	
+	.header-col {
+		border-left: 0.5px solid RGB(var(--now-color_border--tertiary,var(--now-color--neutral-3,209,214,214)));
+		border-right: 0.5px solid RGB(var(--now-color_border--tertiary,var(--now-color--neutral-3,209,214,214)));
+		padding: 8px 6px 6px 6px;
+		text-align: center;
+	}
+	
+	.header-text {
+		font-size: 13px;
+		font-weight: bolder;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.close-btn {
+		font-size: 12px;
+		text-align: center;
+		cursor: pointer;
+	}
+	
+	#replace-btn {
+		padding-right: 0px;
+	}
+	
+	#asset-select-container {
+		padding-left: 0px;
+	}
+	
+	.float-right {
+		float: right;
+	}
+	
+	.full-width {
+		width: 100%;
+	}
+</style>
+</g2:ui_form>
+</j:jelly>

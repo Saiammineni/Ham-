@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g2:ui_form onsubmit="return BundleReplaceAssetUtil.validateSubmit();">
+<g2:requires name="scripts/lib/jquery_includes.js"/>
+<j2:set var="jvar_sys_id" value="${sysparm_sys_id}"/>
+<j2:set var="jvar_stockroom" value="$[sysparm_stockroom]"/>
+
+<!-- Retrieve questions from table and store in array of objects -->
+
+<g2:evaluate var="jvar_assets" object="true">
+	var assets = new sn_hamp.HAMAssetBundleUtils().getAssetsForBundle('$[jvar_sys_id]');
+	var result = { arr: assets, str: JSON.stringify(assets) };
+    result
+</g2:evaluate>
+<div id="translation-div" data-replace-assets-text="${gs.getMessage('Select assets to replace')}"></div>
+<input type="hidden" id="cancelled" name="cancelled" value="false"/>
+<input type="hidden" id="replaceAssetHash" name="replaceAssetHash"/>
+<input type="hidden" id="bundleId" name="bundleId" value='$[jvar_sys_id]'/>
+<j2:if test="$[!empty(sysparm_domain)]">
+	<input type="hidden" id="sysparm_domain" name="sysparm_domain" value="${sysparm_domain}"/>
+</j2:if>
+<j2:if test="$[!empty(sysparm_domain_scope)]">
+	<input type="hidden" id="sysparm_domain_scope" name="sysparm_domain_scope" value="${sysparm_domain_scope}" />
+</j2:if>
+<style>
+	#main-container {
+		margin: 0px 12px;
+	}
+	
+	.asset-label {
+		margin-top: 7px;
+	}
+	
+	.asset-row {
+		margin-bottom: 5px;
+	}
+	
+	.header {
+		background: RGB(var(--now-color_background--secondary,var(--now-color--neutral-1,246,247,247)));
+		display: flex;
+		word-break: break-word;
+	}
+	
+	.header-col {
+		border-left: 0.5px solid RGB(var(--now-color_border--tertiary,var(--now-color--neutral-3,209,214,214)));
+		border-right: 0.5px solid RGB(var(--now-color_border--tertiary,var(--now-color--neutral-3,209,214,214)));
+		padding: 8px 6px 6px 6px;
+		text-align: center;
+	}
+	
+	.header-text {
+		font-size: 13px;
+		font-weight: bolder;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.close-btn {
+		font-size: 12px;
+		text-align: center;
+		cursor: pointer;
+	}
+	
+	#replace-btn {
+		padding-right: 0px;
+	}
+	
+	#asset-select-container {
+		padding-left: 0px;
+	}
+	
+	.float-right {
+		float: right;
+	}
+	
+	.full-width {
+		width: 100%;
+	}
+</style>
+	
+<div id="bundle-container" data-asset-id="$[jvar_sys_id]"></div>
+<div id="meta-data-container" data-payload="$[jvar_assets.str]"></div>
+<div id="error-message-container"  class="alert alert-danger" style="display:none;" role="alert">
+  ${gs.getMessage('Select atleast one replacement asset')}
+</div>
+<div id="main-container">
+	<div class="row header">
+		<div class="col-xs-1 header-col">
+			<label id="action_label" class="header-text" title="${gs.getMessage('Action')}">${gs.getMessage('Action')}</label>
+		</div>
+		<div class="col-xs-4 header-col">
+			<label id="asset_label" class="header-text" title="${gs.getMessage('Asset')}">${gs.getMessage('Asset')}</label>
+		</div>
+		<div class="col-xs-5 header-col">
+			<label id="replace_asset_label" class="header-text" title="${gs.getMessage('Replacement Asset')}">${gs.getMessage('Replacement Asset')}</label>
+		</div>
+		<div class="col-xs-2 header-col">
+			<label id="quantity_label" class="header-text" title="${gs.getMessage('Quantity to replace')}">${gs.getMessage('Quantity to replace')}</label>
+		</div>
+	</div>
+	<br/>
+	
+	<div id="bundle-list-container">
+		<j2:forEach items="$[jvar_assets.arr]" var="jvar_asset">
+			<g2:evaluate jelly="true">
+				var asset_sys_id = jelly.jvar_asset.sys_id;
+				var display_name = jelly.jvar_asset.display_name;
+				var model = jelly.jvar_asset.model;
+				var sys_class_name = jelly.jvar_asset.sys_class_name;
+				var isConsumable = jelly.jvar_asset.isConsumable;
+				var quantity = jelly.jvar_asset.quantity + '';
+				var stockroomQuery = '';
+				if ('$[jvar_stockroom]') {
+					stockroomQuery = '^stockroom=$[jvar_stockroom]';
+				}
+			</g2:evaluate>
+			<div id="id_$[asset_sys_id]" class="asset-row">
+				<div class="row">
+					<div class="col-xs-1">
+						<button aria-label="${gs.getMessage('Close row')}" tabindex="0" class="close-btn btn btn-icon icon-cross" onClick="BundleReplaceAssetUtil.removeRow('$[asset_sys_id]');"></button>
+					</div>
+					<div class="col-xs-4 asset-label">
+						<label aria-labelledby="asset_label">$[display_name]</label>
+					</div>
+					<div class="col-xs-5">
+						<label aria-labelledby="replace_asset_label" class="full-width"/>
+						<g2:ui_reference name="ref_$[asset_sys_id]" query="asset_function=^ORasset_function!=loaner^install_status=6^substatus=available^parentISEMPTY^model=$[model]$[stockroomQuery]" id="ref_$[asset_sys_id]" table="$[sys_class_name]"/>
+					</div>
+					<div class="col-xs-2">
+						<j2:choose>
+						   <j2:when test="$[isConsumable]">
+							   <input aria-labelledby="quantity_label" type="text" name="quantity_$[asset_sys_id]" id="quantity_$[asset_sys_id]" class="form-control" maxlength="40" value="$[quantity]"/>
+							</j2:when>
+						   <j2:otherwise>
+							   <input aria-labelledby="quantity_label" type="text" name="quantity_$[asset_sys_id]" id="quantity_$[asset_sys_id]" class="form-control" maxlength="40" disabled="disabled" value="1"/>
+							</j2:otherwise>
+						</j2:choose>
+					</div>	
+				</div>
+			</div>
+		</j2:forEach>
+	</div>
+	<br/>
+	
+	<div class="row">
+		<div id="asset-select-container" class="col-xs-5">
+			<select id="asset-select" aria-label="${gs.getMessage('Select assets to replace')}" class="form-control float-left" onChange="BundleReplaceAssetUtil.selectAsset(event.target.value);"></select>
+		</div>
+		<div id="replace-btn" class="col-xs-7">
+			<g:dialog_button style_class="btn btn-primary float-right" id="replace-assets-btn" onClick="return BundleReplaceAssetUtil.replaceAssets();">${gs.getMessage('Replace')}</g:dialog_button>
+		</div>
+	</div>
+</div>
+</g2:ui_form>
+</j:jelly>

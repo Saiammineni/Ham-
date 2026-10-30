@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<j:jelly
+	xmlns:j="jelly:core"
+	xmlns:g="glide"
+	xmlns:g2="null"
+	xmlns:j2="null" trim="false">
+	<table border="0" cellspacing="0" cellpadding="1" width="100%" style="padding: 10px;">
+		<tbody>
+			<tr>
+				<td>
+					<label style="margin-left: 0px; font-weight: bold;">${sn_hamp.HAMConstants.MESSAGES['DAYS_UNTIL_NEXT_CONTENT_DOWNLOAD']}</label>
+				</td>
+				<td rowspan="2">
+					<label style="margin-left: 0px;font-weight: bold; font-size: larger; text-align: right;"> ${sn_hamp.HAMUtils.getNextCDSPullDays()}</label>
+				</td>
+			</tr>
+			<tr>
+				<td width="100%">${sn_hamp.HAMConstants.MESSAGES['NUMBER_OF_DAYS_UNTIL_NEXT_CONTENT_LIBRARY_DOWNLOAD_TO_HAPPEN']}</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<hr/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table border="0" cellspacing="0" cellpadding="1" width="100%" style="padding: 10px;">
+		<tbody>
+			<tr>
+				<td>
+					<label style="margin-left: 0px;font-weight: bold;">${sn_hamp.HAMConstants.MESSAGES['DAYS_SINCE_LAST_CONTENT_DOWNLOAD']}</label>
+				</td>
+				<td rowspan="2">
+					<label style="margin-left: 0px;font-weight: bold; font-size: larger; text-align: right;">${sn_hamp.HAMUtils.getLastCDSPullDays()}</label>
+				</td>
+			</tr>
+			<tr>
+				<td width="100%">${sn_hamp.HAMConstants.MESSAGES['NUMBER_OF_DAYS_SINCE_CONTENT_LIBRARY_DOWNLOADED']}</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<hr/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</j:jelly>

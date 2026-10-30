@@ -1,0 +1,1 @@
+new SNC.CanonicalUpdater().processManufacturer(current);

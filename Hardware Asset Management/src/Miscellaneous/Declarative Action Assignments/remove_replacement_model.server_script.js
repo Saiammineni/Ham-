@@ -1,0 +1,1 @@
+global.ContractManagementUtils.deleteRecords(current);

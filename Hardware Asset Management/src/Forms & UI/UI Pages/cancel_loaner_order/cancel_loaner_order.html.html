@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g:ui_form>
+    <input type="hidden" id="cancelled" name="cancelled" value="false"/>
+	<input type="hidden" id="loanerOrder" name="loanerOrder" value="${sysparm_sys_id}"/>
+	<j2:if test="$[!empty(sysparm_domain)]">
+		<input type="hidden" id="sysparm_domain" name="sysparm_domain" value="${sysparm_domain}"/>
+	</j2:if>
+	<j2:if test="$[!empty(sysparm_domain_scope)]">
+		<input type="hidden" id="sysparm_domain_scope" name="sysparm_domain_scope" value="${sysparm_domain_scope}" />
+	</j2:if>
+	<div style="margin-top:10px; margin-bottom:20px; font-size:15px">
+		${gs.getMessage('Are you sure you want to cancel this order?')}
+	</div>
+	<div id="dialogbuttons" colspan="3" align="right" style="padding-right:10px;">
+		<g:dialog_buttons_ok_cancel ok="return actionOK();" cancel="cancel();"/>
+	</div>
+</g:ui_form>
+</j:jelly>

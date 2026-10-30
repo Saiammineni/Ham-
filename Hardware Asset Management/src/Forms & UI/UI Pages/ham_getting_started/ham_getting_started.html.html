@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<html class="">
+
+<head>
+    <link rel="stylesheet" href="/styles/heisenberg/source_sans_pro.css"></link>
+    <link rel="stylesheet" href="/styles/heisenberg/heisenberg_all.css"></link>
+    <style type="text/css">
+        body {
+            font-family: SourceSansPro;
+            padding-top: 30px;
+        }
+        
+        .intro table.tile-container {
+            border-collapse: separate;
+            width: 100%;
+            padding-top: 20px;
+        }
+        
+        .intro table.tile-container tbody tr td.tile {
+            min-height: 100px;
+            border: 1px solid #CFD4D8;
+            border-radius: 3px;
+        }
+        
+        .intro .pad-t30 {
+            padding-top: 30px;
+        }
+        
+        .intro .margin-t8 {
+            margin-top: 8px;
+        }
+        
+        .intro td.tile-sep {
+            min-height: 100px;
+            width: 5%;
+        }
+        
+        .intro td.tile {
+            min-height: 100px;
+            width: 30%;
+            border-radius: 3px;
+        }
+        
+        .intro .height-100 {
+            min-height: 100px;
+        }
+        
+        .intro .no-border {
+            border: 0;
+        }
+        
+        .intro .no-margin {
+            margin: 0;
+        }
+        
+        .intro .no-padding {
+            padding: 0;
+        }
+        
+        .intro table {
+            border-collapse: separate;
+            border-radius: 3px;
+        }
+        
+        .intro table tr {
+            border-radius: 3px;
+        }
+        
+        .intro table tr td {
+            border-radius: 3px;
+        }
+        
+        .intro table tbody tr td.v-center {
+            vertical-align: middle;
+        }
+        
+        .intro table tbody tr td i.icon-chevron-right {
+            font-size: 20px;
+            color: #CBD5DA;
+        }
+        
+        .intro table tbody tr td i.icon-text {
+            font-size: 20px;
+            color: #CBD5DA;
+        }
+        
+        .intro .tile table tbody tr td.tile-body {
+            width: 10%;
+            padding: 17px 0 17px 17px;
+        }
+        
+        .intro .tile table tbody tr td + td.tile-body {
+            width: 90%;
+            padding: 17px;
+        }
+        
+        .intro p.title-text {
+            font-family: SourceSansProSemibold;
+            font-size: 18px;
+            color: #293943;
+        }
+        
+        .intro p.header-text {
+            font-family: SourceSansProSemibold;
+            font-size: 15px;
+            color: #293943;
+        }
+        
+        .intro p.body-text {
+            font-size: 13px;
+            line-height: 1.5em;
+            color: #81878E;
+        }
+        
+        .intro .checklist p.body-text {
+            line-height: 1.6em;
+        }
+        
+        .intro .tile img.icon-img {
+            height: 33px;
+            padding-top: 2px;
+        }
+        
+        .intro .underline {
+            border-bottom: 1px solid #E8EAEC;
+        }
+        
+        .intro .right-border-gray {
+            border-right: 1px solid #E8EAEC;
+        }
+        
+        .intro li.list-group-item.border-top-gray {
+            border-top: 2px solid #E8EAEC;
+        }
+        
+        .intro li+li.list-group-item.border-top-gray {
+            border-top: 1px solid #E8EAEC;
+        }
+        
+        .intro .body {
+            padding-top: 30px;
+        }
+        
+        .intro .wide2-5 {
+            min-height: 100px;
+            width: 2.5%;
+            float: left;
+        }
+        
+        .intro .checklist {
+            width: 100%;
+            float: left;
+            border: 1px solid #CFD4D8;
+            border-radius: 3px;
+            /*box-shadow: 0 0 6px 0 #CFD4D8;
+					-webkit-box-shadow: 0 0 6px 0 #CFD4D8;
+					-moz-box-shadow: 0 0 6px 0 #CFD4D8;*/
+        }
+        
+        .intro .checklist table tbody tr td.pad-15 {
+            padding: 15px;
+        }
+        
+        .intro .checklist table tbody tr td.pad-checklist {
+            padding-right: 15px;
+        }
+        
+        .intro .checklist table tbody tr td+td.pad-checklist {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .intro .checklist table tbody tr td+td.pad-checklist:last-child {
+            padding-left: 15px;
+            padding-right: 0px;
+        }
+        
+        html.ie .intro .icon-max-width {
+            max-width: 40px;
+        }
+        
+        .icon {
+            font-size: 35px;
+            color: orange;
+            margin: 10px;
+        }
+
+		#page_timing_div {
+			display: none !important;
+		}
+        
+        /*
+				This is Edge specific fix since 'ie_checker.xml' does not check for edge
+				refer: https://jeffclayton.wordpress.com/2015/04/07/css-hacks-for-windows-10-and-spartan-browser-preview/
+				*/
+				@supports (-ms-accelerator:true) {
+					.intro .icon-max-width {
+						max-width: 40px;
+					}
+				}</style></head><body>
+
+<!--
+	<div class="icon icon-search" style="color:#cc7a00;"></div>
+	<div class="icon icon-stop-watch" style="color:#0066cc;"></div>
+	<div class="icon icon-tree" style="color:cc7a00;"></div>
+	<div class="icon icon-alert" style="color:#990000;"></div>
+	<div class="icon icon-database" style="color:#4d4d4d;"></div>
+	<div class="icon icon-connect-newwin" style="color:#0066cc;"></div>
+-->
+
+   <div class="container-fluid intro">
+      <div class="row">
+         <table class="table height-100 no-margin tile-container">
+            <tbody>
+               <tr>
+                  <td class="no-padding tile">
+                     <table class="table height-100 no-margin">
+                        <tbody>
+                           <tr>
+                              <td class="tile-body no-border icon-max-width"><img class="icon-img" src="/images/gsw/get_going.svg"></img></td>
+                              <td class="tile-body no-border">
+                                 <p class="header-text">${gs.getMessage('Setup');}</p>
+                                 <p class="body-text">${gs.getMessage('Setup Hardware Asset Management features');}</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+                  <td class="no-padding no-border v-center tile-sep" aria-hidden="true">
+                     <table class="table no-margin height-100">
+                        <tbody>
+                           <tr>
+                              <td class="no-border v-center text-center"><i class="icon icon-chevron-right"></i></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+                  <td class="no-padding tile">
+                     <table class="table height-100 no-margin">
+                        <tbody>
+                           <tr>
+                              <td class="tile-body no-border icon-max-width"><img class="icon-img" src="/images/gsw/learn.svg"></img></td>
+                              <td class="tile-body no-border">
+                                 <p class="header-text">${gs.getMessage('Learn');}</p>
+                                 <p class="body-text">${gs.getMessage('Learn more about Hardware Asset Management (HAM) within ServiceNow');}</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+                  <td class="no-padding no-border v-center tile-sep" aria-hidden="true">
+                     <table class="table no-margin height-100">
+                        <tbody>
+                           <tr>
+                              <td class="no-border v-center text-center"><i class="icon icon-chevron-right"></i></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+                  <td class="no-padding tile">
+                     <table class="table height-100 no-margin">
+                        <tbody>
+                           <tr>
+                              <td class="tile-body no-border icon-max-width"><img class="icon-img" src="/images/gsw/be_empowered.svg"></img></td>
+                              <td class="tile-body no-border">
+                                 <p class="header-text">${gs.getMessage('Be empowered');}</p>
+                                 <p class="body-text">${gs.getMessage('Empower you to drive value from managing the end to end lifecycle of your technology hardware assets');}</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="row body">
+         <div class="col-md-12 no-padding">
+            <p class="body-text">${gs.getMessage('HAM_GUIDED_SETUP_TITLE_DESC2');}</p>
+			 <p class="body-text p-margin-b3">${gs.getMessage('HAM_GUIDED_SETUP_TITLE_DESC3');}$[SP]<a href="https://docs.servicenow.com/?context=CSHelp:Update-Sets-Getting-Started" target="_blank" style="text-decoration: underline;">Update Sets</a>$[SP]and$[SP]<a href="https://docs.servicenow.com/?context=Exporting_Data" target="_blank" style="text-decoration: underline;">Exporting Data</a> &#160;in our product documentation before starting.</p>
+         </div>
+      </div>
+   </div>
+</body>
+</html></j:jelly>

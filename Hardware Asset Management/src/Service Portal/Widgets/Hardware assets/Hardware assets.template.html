@@ -1,0 +1,79 @@
+<div class="widget">
+   <div class="data" ng-if="c.data.assets">
+      <div class="header">
+         <h3 class="header-size" id="header-value" aria-label={{c.data.heading}}>
+            {{::c.data.heading}}
+         </h3>
+      </div>
+      <hr>
+     
+      <div class="tile-container">
+         <div class="tile" ng-repeat="app in c.data.assets">
+            <div class="inner-container-1">
+               <div class="title-header-left">
+                  <div class="mh-card-header">{{app.type}}</div>
+               </div>
+               <div class="title-header-right">
+                  <span class="status {{app.statusCSSClass}}">{{app.status}}</span>
+               </div>
+            </div>
+            <div class="inner-container-2">
+               <div class="image-container">
+                  <img class="image-fit" ng-if="app.modelImage" src="{{app.modelImage}}?t=medium" alt={{app.modelImageAlt}} width=100%>
+                  <img ng-if="!app.modelImage" src="sn_itam_common.no_image_itam.png" alt={{app.modelImageAlt}} width=100%>
+               </div>
+               <div class ="asset-details">
+                  <h3 class="title text-ellipsis-four-line" title="{{::app.name}}" aria-label="{{::app.name}}">{{app.name}}</h3>
+                  <p ng-if="app.type == c.data.consumableType">Quantity: {{app.quantity}}</p>
+                 <div class="description" aria-label="{{app.refresh}}">{{app.refresh}}</div>
+               </div>
+            </div>
+            <div class="widget-buttons">
+               <div class="button-container-1">
+                  <div><button class="btn btn-issue btn-default" type="submit" aria-label="{{c.data.issue}}" ng-click="c.redirectIncidentPage(app.incidenturl)" data-toggle="tooltip" title="{{c.data.raiseIssueButtonTooltip}}">
+                     {{::c.data.issue}}
+                     </button>
+                  </div>
+                  <div ng-if="app.attestation">
+                     <button class="btn btn-attest btn-default" type="submit" aria-label=" {{app.attestation}}" ng-click="c.redirectAttestionPage(app.url)">
+                     {{::app.attestation}}
+                     </button>
+                  </div>
+                  <div ng-if="app.receive">
+                     <button class="btn btn-primary" type="submit" aria-label="{{app.receive}}" ng-click="c.openReceivePopup(app)" data-toggle="tooltip" title="{{c.data.receiveAssetButtonTooltip}}">
+                     {{::app.receive}}
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+     <div ng-if="c.paginationDisplayed" class="pagination">
+        <div class="pages-info">
+            <span>{{c.paginationlabelTranslation}}</span>
+       </div>
+       <div class="pbuttons">
+            <button class="btn btn-default" aria-label=" {{c.data.ariaLeftLabel}}" ng-click="c.prevPage()" ng-disabled="c.currentPage === 1">
+              <i class="icon-chevron-left"></i>
+                </button>
+            <span class="page-item current-page item page-num" aria-label=" {{c.currentPage}}">{{c.currentPage}}</span>
+            <button class="btn btn-default" aria-label=" {{c.data.ariaRightLabel}}" ng-click="c.nextPage()" ng-disabled="c.currentPage === c.totalPages">
+              <i class="icon-chevron-right"></i>
+                </button>
+        </div>
+    </div>
+    <hr> 
+  </div>
+  <div ng-if="!c.data.assets" class="empty-state">
+        <div class="empty-state-icon">
+        <i class="fa fa-folder-open" aria-hidden="true"></i>
+        </div>
+    <div class="empty-state-header">
+      <h4 aria-label={{::c.data.noassetheader}}>{{::c.data.noassetheader}}</h4>
+    </div>
+    <div class="empty-state-message">
+        <span aria-label={{::c.data.noassetsmessage}}>{{::c.data.noassetsmessage}}</span>
+    </div>
+    </div>
+
+</div>

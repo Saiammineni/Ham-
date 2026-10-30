@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g2:requires name="scripts/lib/jquery_includes.js"/>
+<div id="error-message-container"  class="alert alert-danger hide" role="alert" style="margin-bottom:5px;">
+</div>
+<div id="info-message-container"  class="alert alert-warning hide" role="alert" style="margin-bottom:5px;">
+</div>
+<g:ui_form>
+	<input type="hidden" id="cancelled" name="cancelled" value="false"/>
+	<input type="hidden" name="loaner_order" id="loaner_order" value="${sysparm_sys_id}"/>
+	<input type="hidden" name="loaner_asset" id="loaner_asset" value="${sysparm_asset_id}"/>
+	<input type="hidden" name="actual_stockroom" id="actual_stockroom" value="${sysparm_actual_stockroom}"/>
+	<j2:if test="$[!empty(sysparm_domain)]">
+		<input type="hidden" id="sysparm_domain" name="sysparm_domain" value="${sysparm_domain}"/>
+	</j2:if>
+	<j2:if test="$[!empty(sysparm_domain_scope)]">
+		<input type="hidden" id="sysparm_domain_scope" name="sysparm_domain_scope" value="${sysparm_domain_scope}" />
+	</j2:if>
+
+	<table width="100%" style="border-spacing:10px; height:100px;">
+		<tr>
+			<td rowspan="5" nowrap="true" width="110px" style="vertical-align:middle">
+				<img src="images/plugin_activate.gifx" alt="${gs.getMessage('Activate/Upgrade')}" style="vertical-align:middle"/>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;"><label for="assetreturned" title="${gs.getMessage('Was asset returned?')}">${gs.getMessage('Asset returned:')}</label></td>
+			<td style="padding:10px;">
+				<select id='assetreturned' name="assetreturned" class="form-control">
+					<option value='N'>${gs.getMessage('No')}</option>
+					<option value='Y'>${gs.getMessage('Yes')}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td style="white-space: nowrap; text-align:right;"><label for="isassetfunctional" title="${gs.getMessage('Is asset functioning?')}">${gs.getMessage('Asset functional:')}</label></td>
+			<td style="padding:10px;">
+				<select id='isassetfunctional' name="isassetfunctional" class="form-control">
+					<option value=''>${gs.getMessage('-- None --')}</option>
+					<option value='Y'>${gs.getMessage('Yes')}</option>
+					<option value='N'>${gs.getMessage('No')}</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td style="text-align:right;"><label style="color:red">*</label><label id="stockroom_label" title="${gs.getMessage('Stockroom to which the loaner asset is returned')}">${gs.getMessage('Stockroom:')}</label></td>
+			<td id="td_reference_stockroom"><g:ui_reference name="stockroom" id="stockroomId" table="alm_stockroom" aria-labelledby="stockroom_label"/></td> 
+		</tr>
+		
+		<tr>
+			<td style="text-align:right;"><label for="returned_on" title="${gs.getMessage('Actual date of return')}">${gs.getMessage('Returned on:')}</label></td>
+			<td id="td_date_returned_on"><g:ui_date id="returned_on" name="returned_on" value=""/></td>
+		</tr>
+		
+		<script>
+			var tdReferenceStockroom = document.getElementById('td_reference_stockroom');
+			var tdDateReturnedOn = document.getElementById('td_date_returned_on');
+			var isPolarisEnabled = window.NOW.isPolarisEnabled;
+			if (isPolarisEnabled === 'true') {
+				tdReferenceStockroom.style.padding = '10px';
+				tdDateReturnedOn.style.padding = '10px';
+			} else {
+				tdReferenceStockroom.setAttribute('style','');
+				tdDateReturnedOn.setAttribute('style','');
+			}
+		</script>
+		
+			
+		<tr id="dialogbuttons">
+			<td colspan="3" align="right" style="padding-right:10px;">
+				<g:dialog_buttons_ok_cancel ok="return actionOK();" cancel="cancel();"/>
+			</td>
+		</tr>
+	</table>
+</g:ui_form>
+</j:jelly>

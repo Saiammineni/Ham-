@@ -1,0 +1,108 @@
+<style>
+  .modal-header {
+      border-bottom: none;
+  }
+  .modal-body {
+     border-bottom: none;
+     padding-top: 0px;
+     padding-bottom: 0px;
+  }
+  .modal-footer {
+    border-top: none;
+    border-bottom: none;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    justify-content: space-between;
+  }
+  .asset-label{
+     font-size: small;
+     padding-right: 2px;
+  }
+  .asset-input{
+     height: 32px;
+  }
+  .popup-description {
+     font-size: medium;
+  }
+  .footer-container {
+     display: flex;
+     justify-content: space-between;
+     padding-top: 20px;
+  }
+  .readonly-bg {
+     background-color: #E4E6EA !important;
+  }
+  .asset-icon {
+     font-weight: 900;
+     font-size: 12px;
+  }
+  .asterisk-icon {
+     font-weight: lighter;
+     font-size: 20px;
+     vertical-align: bottom;
+  }
+  .has-error {
+     border: 1px solid #E42338;
+  }
+  .error-message {
+     background-color: #F1CECD;
+     text-align: left;
+     font-size: 12px;
+     border-radius: 2px;
+     padding-left: 4px;
+  }
+  .tooltip {
+    position: fixed;
+    z-index: 1060;
+  }
+</style>
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" data-toggle="tooltip" title="{{c.data.cancelButtonLabel}}" aria-label="{{c.data.cancelButtonLabel}}">&times;</button>
+      <h3 class="modal-title" aria-label="{{c.data.popupTitle}}" tabindex="0">{{c.data.popupTitle}}</h3>
+    </div>
+    <div class="modal-body">
+      <p class="popup-description" aria-label="{{c.data.popupDescription}}" tabindex="0">{{c.data.popupDescription}}</p>
+      <!-- Check if the asset is consumable, and show quantity field instead of Asset Tag and Serial Number -->
+      <div ng-if="asset.type === c.data.consumableType" class="asset-field">
+        <!-- Quantity Field (only shown for consumables) -->
+        <div class="form-group" style="margin-bottom: 4px">
+          <label for="quantity" class="asset-label" aria-label="{{c.data.quantityTooltip}}" tabindex="0">Quantity</label>
+          <span class="asterisk-icon" title="Required" aria-label="Required">*</span>
+          <span data-toggle="tooltip" title="{{c.data.quantityTooltip}}">
+            <i aria-hidden="true" class="fa fa-info-circle asset-icon"></i>
+          </span>
+          <input aria-required="true" type="number" class="modal-input form-control" id="quantity" ng-model="c.data.quantity" ng-required="true" ng-class="{'has-error': c.data.errorField == 'quantity'}"/>
+        </div>
+      </div>
+      <div ng-if="asset.type === c.data.hardwareType" class="asset-field">
+        <div class="form-group" style="margin-bottom: 3%">
+          <label for="assetTag" class="asset-label" aria-label="{{c.data.assetTagTooltip}}" tabindex="0">Asset tag</label>
+          <span data-toggle="tooltip" title="{{c.data.assetTagTooltip}}">
+            <i aria-hidden="true" class="fa fa-info-circle asset-icon"></i>
+          </span>
+          <input type="text" class="form-control asset-input" id="assetTag" ng-model="c.data.assetTag" ng-readonly="!isEditableAssetTag" ng-init ="isEditableAssetTag = !asset.assetTag && asset.areAssetDetailsEditable" ng-class="{'readonly-bg': !isEditableAssetTag}"/>
+        </div>
+        <div class="form-group" style="margin-bottom: 4px">
+          <label for="serialNumber" class="asset-label" aria-label="{{c.data.serialNumberTooltip}}" tabindex="0">Serial number</label>
+          <span data-toggle="tooltip" title="{{c.data.serialNumberTooltip}}">
+            <i aria-hidden="true" class="fa fa-info-circle asset-icon"></i>
+          </span>
+          <input type="text" class="form-control asset-input" id="serialNumber" ng-model="c.data.serialNumber" ng-readonly="!isEditableSerialNumber" 
+             ng-init ="isEditableSerialNumber = !asset.serialNumber && asset.areAssetDetailsEditable" ng-class="{'readonly-bg': !isEditableSerialNumber, 'has-error': c.data.errorField == 'serialNumber'}"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div ng-init="shouldShowWarning = asset.type === c.data.hardwareType && asset.assetTag && asset.serialNumber" ng-show="shouldShowWarning">
+        <i aria-hidden="true" class="fa fa-exclamation-circle asset-icon"></i>
+        <span class="asset-label" aria-label="{{c.data.raiseIssueMessage}}" tabindex="0">{{c.data.raiseIssueMessage}}</span>
+      </div>
+      <div ng-show="c.data.fieldErrorMessage" class="error-message">
+        <i aria-hidden="true" class="fa fa-exclamation-circle asset-icon"></i>
+        <span aria-label={{c.data.fieldErrorMessage}} tabindex="0">{{c.data.fieldErrorMessage}}</span>
+      </div>
+      <div class="footer-container">
+        <button type="submit" class="btn btn-default" data-toggle="tooltip" title="{{c.data.raiseIssueButtonTooltip}}" ng-click="raiseIssue()" aria-label="{{c.data.raiseIssueButtonLabel}}">Raise issue</button>
+        <button type="submit" class="btn btn-primary" data-toggle="tooltip" title="{{c.data.submitButtonTooltip}}" ng-click="submit()" aria-label="{{c.data.submitButtonLabel}}">Submit</button>
+      </div></div>

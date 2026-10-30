@@ -1,0 +1,1 @@
+(new sn_hamp.HAMLicensingUtility()).updateMobileDeviceMC();

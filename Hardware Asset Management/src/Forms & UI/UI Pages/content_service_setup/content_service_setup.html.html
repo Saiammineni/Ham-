@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<link rel="stylesheet" type="text.css" href="/styles/css_includes_ng.css" />
+	<g:inline template="set_theme_vars.xml" />
+	<g:if_polaris>
+		<g:then>
+			<g:inline template="polarisberg_output.xml"/>
+		</g:then>
+		<g:else>
+			<g:requires name="styles/css_includes_doctype.css" includes="true" params="$[jvar_css_cache_key]" />
+			<g:requires name="styles/heisenberg/heisenberg_all.css" includes="true" params="$[jvar_css_cache_key]" />
+		</g:else>
+	</g:if_polaris>
+	<g:requires name="scripts/lib/jquery_includes.js" />
+	<g:requires name="scripts/angular_includes_1.5.11.js" />
+	<g:requires name="scripts/sn/common/auth/js_includes_auth.js" />
+	<g:inline template="ie_checker.xml" />
+		<j:if test="$[JS:(jvar_isMSIE8 || jvar_isMSIE7)]">
+			<g:requires name="scripts/heisenberg/thirdparty/respond.min.js"/>
+		</j:if>	
+	<g:evaluate var="jvar_opt_in_status" object="true" jelly="true">
+		var status = new sn_hamp.HAMHardwareContentServiceOptUtil().getConfiguration();
+		status;
+	</g:evaluate>
+	<g:evaluate var="jvar_color_darkest">
+		var map = CSSPropertiesRepository.getSessionProperties();
+		map["$color-darkest"];
+	</g:evaluate>
+
+	<html class="$[sn_ui.PolarisUI.getBodyClassNames()]" ng-controller="HwOptInCtrl" ng-app="hamp_opt" ng-init="init('${JS:jvar_opt_in_status}')">
+		<g:inline template="dir_checker.xml" />
+		<g:evaluate var="jvar_language" expression="gs.getSession().getLanguage()"></g:evaluate>
+		
+		<style>
+			.custom_notif {
+				border: 0px !important;
+				padding: 0px !important;
+				min-width: inherit !important;
+				min-height: inherit !important;
+			}
+
+			.custom_notif:hover {
+				color: RGB(var(--now-color_grouped--green-2, 147, 170, 125)) !important;
+				opacity: 1 !important;
+				background-color: RGB(var(--now-color_alert--positive-0, 201, 224, 202)) !important;
+			}
+
+			.bold_paragraph {
+				font-size: 1.2em;
+				font-weight: bold;
+			}
+
+			#main_container {
+				border: 1px solid RGB(var(--now-color_border--tertiary, var(--now-color--neutral-3, 209, 214, 214)));
+				border-radius: 5px;
+				background-color: RGB(var(--now-color_background--tertiary, var(--now-color--neutral-2, 228, 230, 231)));
+				margin: 15px;
+				padding: 30px;
+				position: relative;
+				overflow: auto;
+			}
+
+			#main_container .home-page-header {
+				border-bottom: 0px;
+				padding: 0px 10px !important;
+			}
+
+			.brief_intro {
+				font-size: 1.4em;
+				margin: 0 0 40px 0;
+			}
+
+			.detail_intro {
+				font-size: 1.2em;
+			}
+
+			#opt_in_btn {
+				padding: 0;
+				position: absolute;
+				bottom: 0;
+				left: 10px;
+			}
+
+			#more_info_btn {
+				padding: 0;
+				position: absolute;
+				bottom: 0;
+				left: 150px;
+			}
+
+			#main_content {
+				padding: 10px;
+				vertical-align: middle;
+			}
+
+			#main_content img {
+				height: auto;
+				width: 500px;
+			}
+
+			button.btn-icon.close.icon-cross:focus {
+				border: none;
+			}
+
+			#required_label {
+				width: 40px;
+			}
+
+			#main_container > .modal-header {
+				border-bottom: none;
+			}
+
+			.icon-vcr-right:before {
+				margin-bottom: 4px;
+			}
+
+			.input-switch {
+				padding-top: 5px!important;
+			}
+
+			.opt-out-link {
+				padding: 10px 0px 40px 0px;
+			}
+
+			.spacer {
+				display: block;
+				margin-top: 46px;
+				height: 0;
+			}
+
+			.content-alert {
+				margin:15px;
+			}
+
+			.content-navbar {
+				margin: 0px;
+				position: fixed;
+				width: 100%;
+				top: 0;
+				z-index: 100;
+			}
+
+			#content_properties .navbar {
+				margin-left: -5px;
+				margin-right: -18px;
+				margin-top: 0px;
+			}
+
+			#content_properties .navbar-header { margin:0 10px; }
+			#content_properties .navbar-title { margin-left: 10px; }
+			.content-margin-left-10{
+				margin-left: 10px!important;
+			}
+
+			.content-margin-right-5{
+				margin-right: 5px!important;
+			}
+			.content-table, div#category_table {
+				width: 60%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.content-table{
+				margin-top: 20px!important;
+				padding: 5px;
+				border-spacing: 15px;
+				border-collapse: collapse;
+				border: 1px solid;
+			}
+
+			.content-td-header{
+				padding: 5px;
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+
+			.content-tr{
+				border-bottom: 1px solid RGB(var(--now-color_border--primary, var(--now-color--neutral-7, 135, 147, 148)));
+			}
+
+			.content-margin-left-8{
+				margin-left: 8px!important;
+			}
+
+			.content-font-12{
+				font-size: 12px!important;
+			}
+
+			.content-font-13{
+				font-size: 13px!important;
+			}
+
+			.additional_info {
+				padding: 5px 5px 5px 25px;
+				margin: 5px;
+			}
+
+			.content-setup-header {
+				padding: 0px 0px 0px 10px;
+				font-weight: bold;
+			}
+			
+			.btn-link-dark {
+				color: RGB(var(--now-color_grouped--teal-4, 73, 122, 114));
+			}
+		</style>
+		<div id="pop_up_agreement" aria-hidden="true" class="modal" role="dialog" aria-labelledby="pop_up_agreement_title">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<header tabindex="0" class="modal-header">
+						<button tabindex="0" data-dismiss="modal" class="btn btn-icon close icon-cross" ng-click="setModalUrl('blank')">
+							<span class="sr-only">${gs.getMessage("Close")}</span>
+						</button>
+						<h4 id="pop_up_agreement_title" class="modal-title">${gs.getMessage("ServiceNow Content Service Agreement")}</h4>
+					</header>
+					<div tabindex="0" class="modal-body">
+						<p>${gs.getMessage("HAM_Content_Service_Opt_In_Agreement_Legal_Message")}</p>
+						<p>${gs.getMessage("It may take a few content downloads before you will start seeing enhancements in your CMDB in regards to normalized hardware information.")}</p>
+						<p>${gs.getMessage("HAM: Content Service: Opt In Agreement: Anonymity message")}</p>
+						<p>${gs.getMessage("We protect all hardware asset data using the same policies, procedures, tools and techniques that we use to protect our customer's instances.")}</p>
+						<p>${gs.getMessage("Your company can decide to opt-out from the ServiceNow Hardware Asset Management Content Service at anytime.")}</p>
+					</div>
+					<footer class="modal-footer">
+						<button tabindex="0" type="button" id="done_btn" class="btn btn-primary" data-dismiss="modal">${gs.getMessage("Done")}</button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		<div ng-show="!persistedStatus.optInStatus">
+			<div tabindex="0" class="alert alert-info content-alert" id="infoMessage">
+				<button tabindex="0" id="close_info" class="btn btn-icon close icon-cross" ng-click="hideMessage('infoMessage')" style="margin-top: 5px;">
+					<span class="sr-only">${gs.getMessage("Close Messages")}</span>
+				</button>
+				<p class="bold_paragraph" id="opt_in_message">${gs.getMessage("Your company has opted-out of the ServiceNow Hardware Asset Management Content Service program")}</p>
+				<p id="opt_in_instruction" style="margin-top: 5px!important">${gs.getMessage("Change your mind? Opt-in below")}</p>
+			</div>
+			<div id="main_container">
+				<header id="main_header"  tabindex="0"  class="modal-header home-page-header">
+					<h1 id="alert3_title" class="modal-title">${gs.getMessage("What is the Hardware Asset Management Content Service?")}</h1>
+				</header>
+
+				<div tabindex="0" id="main_content">
+					<div id="opt_in_intro" class="col-sm-6">
+						<p class="brief_intro">
+							${gs.getMessage("ServiceNow Content Service is an IT Asset Management shared service that provides customers continual data quality improvement.")}
+						</p>
+						<p class="detail_intro">
+							${gs.getMessage("HAM: Content Service: Welcome: Process Information")}
+						</p>
+						<p class="detail_intro">
+							<span style="padding-right: 5px;">${gs.getMessage("Note that ServiceNow's privacy policies guide how hardware details remain anonymous and secure, and will be properly disposed of after they are reviewed.")} </span>
+						</p>
+					</div>
+					<div class="col-xs-6 col-sm-6">
+						<img id="opt_in_img" src="hamp.png" alt="Content Service"></img>
+					</div>
+				</div>
+
+				<div ng-class = "(agree_checkbox != true) ? 'form-group is-required col-xs-12': 'form-group is-prefilled col-xs-12'" style="clear:both;margin-top: 10px!important;padding-left: 0px;">
+					<label for="field5" id="required_label" class="control-label col-sm-3" style="margin-right: 2px!important">
+						<span id="req_marker" class="required-marker"></span>
+					</label>
+
+					<span  class="input-group-checkbox">
+						<input tabindex="0" id="agree_checkbox" ng-model="agree_checkbox" class="checkbox" type="checkbox" name="agree_checkbox" ng-init="checked=false"></input>
+						<label for="agree_checkbox" class="checkbox-label" style="margin-right: 2px!important;">${gs.getMessage("Yes, I have read and accept the")}&#160;
+							<a tabindex="0" class="btn-link btn-link-dark" data-target="#pop_up_agreement" data-toggle="modal" href="#">${gs.getMessage("Opt-In Agreement")}</a>
+						</label>
+					</span>
+				</div>
+
+				<div class="col-xs-6" style="padding-top: 10px!important;padding-left: 0px;margin-left: 0px;">
+					<span style="padding-left: 25px;">
+						<button tabindex="0" id="opt_in" type="button" class="btn btn-primary" ng-click="optIn()" ng-disabled="!agree_checkbox" disabled="disabled">${gs.getMessage("Opt-In")}</button>
+					</span>
+				</div>
+			</div>
+		</div> 
+		<div ng-show="persistedStatus.optInStatus" class="setup_properties" id="content_properties">
+			<div class="navbar navbar-default section_zero content-navbar" data-type="section_head">
+				<div class="container-fluid">
+					<div class="navbar-header" style="margin:0px; ">
+						<h1 style="display: inline-block; margin-top:9px;" class="navbar-title">${gs.getMessage("Content Service Setup")}</h1>
+					</div>
+					<!-- Save button -->
+					<div class="navbar-right content-margin-right-5">
+						<span draggable="true" style="margin: 0px;">
+							<button id="save_setup" type="button" class="btn btn-primary focus ng-cloak" ng-disabled="!statusChanged" disabled="disabled" ng-click="saveSelection()">${gs.getMessage("Save")}</button>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Spacer -->
+			<div class="spacer">$[AMP]nbsp;</div>
+
+			<div ng-show="saveClicked">
+				<div id="save_success" class="notification notification-success content-alert ng-cloak" ng-show="saveSuccessful">
+					${gs.getMessage("Selection(s) for the Hardware Asset Management Content Service have been successfully saved.")}
+					<button class="btn-icon close icon-cross custom_notif" ng-click="saveClicked=false" style="margin-top:1px;"><span class="sr-only">${gs.getMessage("Close Messages")}</span></button>
+				</div>
+				<div id="save_error" class="notification notification-danger content-alert ng-cloak" ng-show="!saveSuccessful">
+					${gs.getMessage("An error occurred. Please try again later!")}
+					<button class="btn-icon close icon-cross custom_notif" ng-click="saveClicked=false" style="margin-top:1px;"><span class="sr-only">${gs.getMessage("Close Messages")}</span></button>
+				</div>
+			</div>
+
+			<table cellpadding="0" cellspacing="0" class="content-table" style="border:none;">
+				<tbody>
+					<tr class="content-tr">
+						<th class="content-td-header" style="width: 85%; border:none; color: RGB(var(--now-color_text--secondary, var(--now-color--neutral-15, 44, 53, 55)));"><span class="content-font-12">${gs.getMessage("HARDWARE ASSET DATA")}</span></th>
+						<th class="content-td-header" style="text-align:center; border:none;"></th>
+					</tr>
+					<!-- Generic options -->
+					<tr class="content-tr" ng-repeat="config in CONFIGURATIONS track by $index">
+						<td style="width: 85%;" class="content-td-header" ng-click="expand = !expand">
+							<div style="padding: 10px;padding-left: 0px;">
+								<div>
+									<h4 style="margin: 0px;">
+										<div class="ng-cloak" tabindex="0">
+											<span class="content-setup-header content-font-13">
+												<i class="icon-vcr-right" ng-init="expand=false" ng-show="!expand"/>
+												<i class="icon-vcr-down" ng-show="expand"/>
+												{{config.heading}}
+											</span>
+											<div ng-show="expand" class="additional_info content-font-13">
+												<p>{{config.definition}}</p>
+												<p>{{config.details}}</p>
+											</div>
+										</div>
+									</h4>
+								</div>
+							</div>
+						</td>
+						<td class="content-td-header" style="vertical-align:top;">
+							<div class="input-switch" style="position: relative;text-align: right;">
+								<input id="{{config.id}}" tabindex="0" type="checkbox" name="{{config.id}}" ng-click="currentStatus[config.property] = !currentStatus[config.property]; toggleStatusChange();" ng-checked="currentStatus[config.property]"/>
+								<label aria-hidden="false" class="switch" for="{{config.id}}">
+									<span class="sr-only ng-binding">{{config.heading}}</span>
+								</label>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table cellspacing="0" cellpadding="0" class="content-table" style="margin-top: 10px!important; border: none!important;">
+				<tbody>
+					<tr>
+						<td class="opt-out-link">
+							<span style="font-size: 13px;">
+								<a id="opt_out"  class="btn-link" tabindex="0" data-target="#opt_out_alert" data-toggle="modal">${gs.getMessage("I would like to opt my company out of the Hardware Asset Management Content Service Program")}</a>
+							</span>
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div id="opt_out_alert" aria-hidden="true" class="modal" role="dialog" aria-labelledby="opt_out_alert_title">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<header class="modal-header">
+							<button data-dismiss="modal" tabindex="0" class="btn btn btn-icon close icon-cross" ng-click="setModalUrl('blank')" id="optout_close_btn">
+								<span class="sr-only">${gs.getMessage("Close")}</span>
+							</button>
+							<h4 id="opt_out_alert_title" tabindex="0" class="modal-title">${gs.getMessage("Opting-Out of the ServiceNow Content Service")}</h4>
+						</header>
+						<div class="modal-body" tabindex="0">
+							<p>
+								<span>
+									${gs.getMessage("Opting-out of the ServiceNow Hardware Asset Management Content Service means that your company will no longer receive content updates specific to your unique Hardware model footprint that exists within your environment and CMDB.")} 
+									$[AMP]nbsp;
+								</span>
+								<span>
+									${gs.getMessage("You will still receive incremental content updates based on what the Content Service team can create from other sources.")}
+								</span>
+							</p>
+							<p>
+								${gs.getMessage("Your company can rejoin the ServiceNow Hardware Asset Management Content Service at anytime through the Content Service Setup module in the Hardware Asset Management application.")}
+							</p>
+						</div>
+						<div>
+							<footer class="modal-footer">
+								<button type="button" id="optout_btn" tabindex="0" class="btn btn-primary content-margin-left-8" data-dismiss="modal" ng-click="optOut()">${gs.getMessage("Opt-Out")}</button>
+							</footer>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</html>
+</j:jelly>

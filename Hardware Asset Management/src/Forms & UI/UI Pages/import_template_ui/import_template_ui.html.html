@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<g:requires name="styles/heisenberg/heisenberg_all.css" includes="true"/>
+	<g:requires name="scripts/lib/jquery_includes.js" includes="true"/>
+	<script src="sn_hamp.import_template_ui_script.jsdbx"></script>
+	<style type="text/css">
+		.import-uploader{
+			margin-left: 25%;
+			margin-right: 25%;
+		}
+		.upload-step {
+			position: relative;
+			min-height: 320px;
+			box-sizing: border-box;
+		}
+		.drop-step{
+			min-height: 290px;
+			margin: 0px 0px 15px 0px;
+			border: 2px dashed #AAAAAA;
+		}
+		.icon-upload {
+			color: #485563;
+			font-size: 40px;
+			line-height: 30px;
+		}
+		.message {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 100%;
+			-webkit-transform: translate(0, -50%);
+			-ms-transform: translate(0, -50%);
+			transform: translate(0, -50%);
+			-webkit-transition: opacity 0.15s linear;
+			transition: opacity 0.15s linear;
+			color: #485563;
+			text-align: center;
+		}
+		.error_msg, .success_msg, .error_msg{
+			margin-left: 5px;
+		}
+		.section{
+			margin-top: 15px;
+		}
+		.section .p{
+			padding-bottom: 8px;
+			margin-bottom: 0px !important;
+		}
+		.browse-btn{
+			padding: 15px 0px;
+		}
+		#load{
+			display: none;
+			padding-right: 15px;
+			float: left;
+			margin-top: 5px;
+		}
+		.submit-btn{
+			position: relative;
+			float: left;
+		}
+		#errorSec button, #successSec button, #warnSec button{
+			border: 0px !important;
+			padding: 0px !important;
+			min-width: inherit !important;
+			min-height: inherit !important;
+			background-color: inherit !important;
+			margin: -7px 0px 0px 0px !important;
+		}
+		.notification {
+			margin-bottom: 5px !important;
+		}
+		.icon-container{
+			padding-bottom: 8px;
+		}
+		.import-footer{
+			float: right;
+		}
+		.import-parent-container{
+			clear: both;
+			margin-bottom: 50px;
+		}
+	</style>
+	<body>
+		<div class="import-parent-container">
+			<!-- Title bar -->
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button class="btn btn-default icon-chevron-left navbar-btn" title="${gs.getMessage('Back')}" onclick="goBack();"></button>
+						<h1 style="display:inline-block;" class="navbar-title">${gs.getMessage('Import Template')}</h1>
+					</div>
+				</div>
+			</nav>
+
+			<!-- Error section -->
+			<div class="notification notification-danger" id="errorSec" style="display:none">
+				<span class="notification-icon icon-cross-circle"></span>
+				<span tabindex= "0" id="error_message"/>
+				<button class="btn-icon close icon-cross" onclick="closeMessage('errorSec')"><span class="sr-only">Close</span></button>
+			</div>
+
+			<!-- Warning section -->
+			<div class="notification notification-warning" id="warnSec" style="display:none">
+				<span class="notification-icon icon-info"></span>
+				<span id="warn_message"/>
+				<button class="btn-icon close icon-cross" onclick="closeMessage('warnSec')"><span class="sr-only">Close</span></button>
+			</div>
+
+			<!-- Success section -->
+			<div class="notification notification-success" id="successSec" style="display:none">
+				<span class="notification-icon icon-info"></span>
+				<span id="success_message"/>
+				<button class="btn-icon close icon-cross" onclick="closeMessage('successSec')"><span class="sr-only">Close</span></button>
+			</div>
+
+			<div class="import-uploader">
+				<!-- Download import template -->
+				<div id="exportTemplate" class="section">
+					<p>${gs.getMessage("Template File")}</p>
+					<a id="downloadTemplate" href="" onclick="downloadTemplate(); return false;">${gs.getMessage("Download Template File (.xlsx)")}</a>
+				</div>
+				<div class="section">
+					<p>${gs.getMessage("Choose a template file to upload")}</p>
+					<div class="import-template">
+						<div class="area upload-step drop-step" drag-over-class="hover">
+							<div class="message upload">
+								<div class="icon-container">
+									<i class="icon-upload"></i>
+								</div>
+								<div>${gs.getMessage('Drag and drop completed template file here')}</div>
+								<div>${gs.getMessage("or")}</div>
+								<div class="browse-btn">
+									<button id="browseFileBtn" onclick="browseFile()" class="btn btn-default" type="button">${gs.getMessage("Browse files")}</button>
+								</div>
+								<p id="templateName"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="import-footer">
+					<span id="load">
+						<i class="icon-loading"/>
+					</span>
+					<button id="importExcelBtn" onclick="uploadSetup()" class="submit-btn btn btn-primary" type="button" disabled="disabled">${gs.getMessage("Upload")}</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</j:jelly>
